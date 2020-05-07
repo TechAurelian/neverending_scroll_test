@@ -1,8 +1,14 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
 extension ColorX on Color {
+  static Color random(Random random) => Color(random.nextInt(0xFFFFFF)).withAlpha(0xFF);
+
+  static Color randomPrimary(Random random) =>
+      Colors.primaries[random.nextInt(Colors.primaries.length)];
+
   Color contrastOf() =>
       ThemeData.estimateBrightnessForColor(this) == Brightness.light ? Colors.black : Colors.white;
 
