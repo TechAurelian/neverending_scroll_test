@@ -21,21 +21,10 @@ class IndexListItem extends StatelessWidget {
     return ListTile(
       title: Text(
         localizations.formatDecimal(index),
-        textAlign: listItemStyle.textAlign,
+//        textAlign: listItemStyle.textAlign,
         softWrap: false,
         overflow: TextOverflow.fade,
-        style: listItemStyle.textStyle,
-//        style: TextStyle(
-//
-//            fontSize: listItemStyle.fontSize,
-//            fontWeight: listItemStyle.fontWeight,
-//            letterSpacing: listItemStyle.letterSpacing,
-//            fontFeatures: [
-////              FontFeature.tabularFigures(),
-////              FontFeature.oldstyleFigures(),
-////              FontFeature.stylisticSet(6),
-////              FontFeature('c2sc')
-//            ]),
+//        style: listItemStyle.textStyle,
       ),
       onTap: () {},
     );

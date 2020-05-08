@@ -25,10 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.appName),
-//        title: Text('${listItemStyle.textStyle.debugLabel}'),
+//        title: Text('${listItemStyle.fontFeature}'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.style),
@@ -58,12 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListTileTheme(
             textColor: listItemStyle.textColor,
             contentPadding: listItemStyle.contentPadding,
-
             child: ListView.builder(
-              itemBuilder: (context, index) => IndexListItem(
-                index,
-//                index + 1000000,
-                listItemStyle: listItemStyle,
+              itemBuilder: (context, index) => ListTile(
+                title: Text(
+                  localizations.formatDecimal(index),
+                  textAlign: listItemStyle.textAlign,
+                  softWrap: false,
+                  overflow: TextOverflow.fade,
+                  style: listItemStyle.textStyle,
+                ),
+                onTap: () {},
               ),
             ),
           ),

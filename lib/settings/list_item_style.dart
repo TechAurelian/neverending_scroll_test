@@ -12,53 +12,7 @@ class ListItemStyle {
   static const int _minPaddingFactor = 1;
   static const int _maxPaddingFactor = 5;
 
-  // Font size defaults
-  static const double _materialHeadline1FontSize = 96.0;
-  static const double _materialHeadline2FontSize = 60.0;
-  static const double _materialHeadline3FontSize = 48.0;
-  static const double _materialHeadline4FontSize = 34.0;
-  static const double _materialHeadline5FontSize = 24.0;
-  static const double _materialHeadline6FontSize = 20.0;
-  static const double _materialBodyText1FontSize = 16.0;
-  static const double _materialBodyText2FontSize = 14.0;
-  static const double _materialSubtitle1FontSize = 16.0;
-  static const double _materialSubtitle2FontSize = 14.0;
-  static const double _materialButtonFontSize = 14.0;
-  static const double _materialCaptionFontSize = 12.0;
-  static const double _materialOverlineFontSize = 10.0;
-
-  static const _fontSizes = [
-    _materialHeadline1FontSize,
-    _materialHeadline2FontSize,
-    _materialHeadline3FontSize,
-    _materialHeadline4FontSize,
-    _materialHeadline5FontSize,
-    _materialHeadline6FontSize,
-    _materialBodyText1FontSize,
-    _materialBodyText2FontSize,
-    _materialSubtitle1FontSize,
-    _materialSubtitle2FontSize,
-    _materialButtonFontSize,
-    _materialCaptionFontSize,
-    _materialOverlineFontSize
-  ];
-
-  static final _letterSpacings = [
-    Typography.englishLike2018.display4.letterSpacing,
-    Typography.englishLike2018.display3.letterSpacing,
-    Typography.englishLike2018.display2.letterSpacing,
-    Typography.englishLike2018.display1.letterSpacing,
-    Typography.englishLike2018.headline.letterSpacing,
-    Typography.englishLike2018.title.letterSpacing,
-    Typography.englishLike2018.subhead.letterSpacing,
-    Typography.englishLike2018.body2.letterSpacing,
-    Typography.englishLike2018.body1.letterSpacing,
-    Typography.englishLike2018.button.letterSpacing,
-    Typography.englishLike2018.caption.letterSpacing,
-    Typography.englishLike2018.subtitle.letterSpacing,
-    Typography.englishLike2018.overline.letterSpacing,
-  ];
-
+  /// Available text styles (from [Typography.englishLike2018])
   static final _textStyles = [
     Typography.englishLike2018.display4,
     Typography.englishLike2018.display3,
@@ -75,6 +29,34 @@ class ListItemStyle {
     Typography.englishLike2018.overline,
   ];
 
+  /// Available font features
+  ///
+  /// [List source](https://github.com/googlefonts/roboto/blob/master/scripts/subset_for_web.py)
+  static const _fontFeatures = [
+    'c2sc',
+    'ccmp',
+    'cpsp',
+    'dlig',
+    'dnom',
+    'frac',
+    'kern',
+    'liga',
+    'lnum',
+    'locl',
+    'numr',
+    'onum',
+    'pnum',
+    'smcp',
+    'ss01',
+    'ss02',
+    'ss03',
+    'ss04',
+    'ss05',
+    'ss06',
+    'ss07',
+    'tnum'
+  ];
+
   final Random _random = Random();
 
   /// The background color
@@ -83,16 +65,12 @@ class ListItemStyle {
   /// The text color
   Color textColor;
 
-  double fontSize;
-
   double _horizontalPadding;
   double _verticalPadding;
 
   EdgeInsetsGeometry get contentPadding =>
       EdgeInsets.symmetric(horizontal: _horizontalPadding, vertical: _verticalPadding);
 
-  FontWeight fontWeight;
-  double letterSpacing;
   TextAlign textAlign;
 
   TextStyle textStyle;
@@ -111,12 +89,10 @@ class ListItemStyle {
     // Shuffle text align
     textAlign = TextAlign.values[_random.nextInt(TextAlign.values.length)];
 
-    // Shuffle font attributes
-    fontSize = _fontSizes[_random.nextInt(_fontSizes.length)];
-    fontWeight = FontWeight.values[_random.nextInt(FontWeight.values.length)];
-    letterSpacing = _letterSpacings[_random.nextInt(_letterSpacings.length)];
-
-    textStyle = _textStyles[_random.nextInt(_textStyles.length)];
+    // Shuffle text style and font features
+    final String fontFeature = _fontFeatures[_random.nextInt(_fontFeatures.length)];
+    textStyle = _textStyles[_random.nextInt(_textStyles.length)]
+        .copyWith(fontFeatures: [FontFeature(fontFeature)]);
   }
 
   Color _shuffleBackColor() {
