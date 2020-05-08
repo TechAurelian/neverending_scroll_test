@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.appName),
+//        title: Text('${listItemStyle.textStyle.debugLabel}'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.style),
@@ -61,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               itemBuilder: (context, index) => IndexListItem(
                 index,
+//                index + 1000000,
                 listItemStyle: listItemStyle,
               ),
             ),

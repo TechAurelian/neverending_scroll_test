@@ -22,15 +22,20 @@ class IndexListItem extends StatelessWidget {
       title: Text(
         localizations.formatDecimal(index),
         textAlign: listItemStyle.textAlign,
-        style: TextStyle(
-            fontSize: listItemStyle.fontSize,
-            fontWeight: listItemStyle.fontWeight,
-            fontFeatures: [
-//              FontFeature.tabularFigures(),
-//              FontFeature.oldstyleFigures(),
-//              FontFeature.stylisticSet(6),
-              FontFeature('c2sc')
-            ]),
+        softWrap: false,
+        overflow: TextOverflow.fade,
+        style: listItemStyle.textStyle,
+//        style: TextStyle(
+//
+//            fontSize: listItemStyle.fontSize,
+//            fontWeight: listItemStyle.fontWeight,
+//            letterSpacing: listItemStyle.letterSpacing,
+//            fontFeatures: [
+////              FontFeature.tabularFigures(),
+////              FontFeature.oldstyleFigures(),
+////              FontFeature.stylisticSet(6),
+////              FontFeature('c2sc')
+//            ]),
       ),
       onTap: () {},
     );
