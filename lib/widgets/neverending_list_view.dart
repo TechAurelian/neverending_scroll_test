@@ -3,8 +3,10 @@ import 'package:neverendingscroll/settings/list_item_style.dart';
 
 class NeverendingListView extends StatelessWidget {
   final ListItemStyle listItemStyle;
+  final ScrollController scrollController;
 
-  const NeverendingListView({Key key, @required this.listItemStyle}) : super(key: key);
+  NeverendingListView({Key key, @required this.listItemStyle, @required this.scrollController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +19,7 @@ class NeverendingListView extends StatelessWidget {
           textColor: listItemStyle.textColor,
           contentPadding: listItemStyle.contentPadding,
           child: ListView.builder(
+            controller: scrollController,
             itemBuilder: (context, index) => ListTile(
               title: Text(
                 localizations.formatDecimal(index),

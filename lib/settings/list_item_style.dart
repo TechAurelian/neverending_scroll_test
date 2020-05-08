@@ -6,18 +6,11 @@ import 'package:neverendingscroll/utils/color_utils.dart';
 import 'package:neverendingscroll/utils/utils.dart';
 
 class ListItemStyle {
-  /// Default background color
-  static const Color _defaultBackColor = Colors.white;
-
   // Content padding defaults
   static const double _defaultHorizontalPadding = 16.0;
   static const double _defaultVerticalPadding = 12.0;
   static const int _minPaddingFactor = 1;
   static const int _maxPaddingFactor = 5;
-  static const EdgeInsets _defaultContentPadding = EdgeInsets.symmetric(horizontal: 16.0);
-
-  /// Default text align
-  static const TextAlign _defaultTextAlign = TextAlign.start;
 
   /// Available text styles (from [Typography.englishLike2018])
   static final _textStyles = [
