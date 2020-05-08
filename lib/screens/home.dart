@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:neverendingscroll/common/app_strings.dart';
 import 'package:neverendingscroll/settings/list_item_style.dart';
-import 'package:neverendingscroll/widgets/index_list_item.dart';
+import 'package:neverendingscroll/widgets/neverending_list_view.dart';
 
 /// Overflow menu items enumeration.
 enum OverflowMenuItem { settings, rate, help }
@@ -25,8 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.appName),
@@ -54,26 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: Material(
-        color: listItemStyle.backColor,
-        child: InkWell(
-          child: ListTileTheme(
-            textColor: listItemStyle.textColor,
-            contentPadding: listItemStyle.contentPadding,
-            child: ListView.builder(
-              itemBuilder: (context, index) => ListTile(
-                title: Text(
-                  localizations.formatDecimal(index),
-                  textAlign: listItemStyle.textAlign,
-                  softWrap: false,
-                  overflow: TextOverflow.fade,
-                  style: listItemStyle.textStyle,
-                ),
-                onTap: () {},
-              ),
-            ),
-          ),
-        ),
+      body: NeverendingListView(
+        listItemStyle: listItemStyle,
       ),
     );
   }
