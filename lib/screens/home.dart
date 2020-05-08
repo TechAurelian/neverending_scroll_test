@@ -6,7 +6,7 @@ import 'package:neverendingscroll/settings/list_item_style.dart';
 import 'package:neverendingscroll/widgets/neverending_list_view.dart';
 
 /// Overflow menu items enumeration.
-enum OverflowMenuItem { settings, rate, help }
+enum OverflowMenuItem { reset, settings, rate, help }
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,12 +15,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Random random = Random();
-  final ListItemStyle listItemStyle = ListItemStyle();
+  ListItemStyle _listItemStyle = ListItemStyle();
 
   void _shuffleStyles() {
     setState(() {
-      listItemStyle.shuffle();
+      _listItemStyle.shuffle();
     });
+  }
+
+  /// Performs the tasks of the overflow menu items.
+  void popupMenuSelection(OverflowMenuItem item) {
+    switch (item) {
+      case OverflowMenuItem.reset:
+        setState(() {
+          _listItemStyle.reset();
+        });
+        break;
+      case OverflowMenuItem.settings:
+        // Navigate to the Settings screen, and load settings and refresh on return
+//        loadSettingsScreen();
+        break;
+      case OverflowMenuItem.rate:
+        // Launch the Google Play Store page to allow the user to rate the app
+//        launchUrl(_scaffoldKey.currentState, Strings.rateAppURL);
+        break;
+      case OverflowMenuItem.help:
+        // Launch the app online help url
+//        launchUrl(_scaffoldKey.currentState, Strings.helpURL);
+        break;
+    }
   }
 
   @override
@@ -28,14 +51,19 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.appName),
-//        title: Text('${listItemStyle.fontFeature}'),
+//        title: Text('${_listItemStyle.textStyle.debugLabel}'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.style),
             onPressed: _shuffleStyles,
           ),
           PopupMenuButton<OverflowMenuItem>(
+            onSelected: popupMenuSelection,
             itemBuilder: (_) => [
+              PopupMenuItem(
+                value: OverflowMenuItem.reset,
+                child: Text(AppStrings.resetMenuItem),
+              ),
               PopupMenuItem(
                 value: OverflowMenuItem.settings,
                 child: Text(AppStrings.settingsMenuItem),
@@ -53,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: NeverendingListView(
-        listItemStyle: listItemStyle,
+        listItemStyle: _listItemStyle,
       ),
     );
   }

@@ -6,11 +6,18 @@ import 'package:neverendingscroll/utils/color_utils.dart';
 import 'package:neverendingscroll/utils/utils.dart';
 
 class ListItemStyle {
+  /// Default background color
+  static const Color _defaultBackColor = Colors.white;
+
   // Content padding defaults
   static const double _defaultHorizontalPadding = 16.0;
   static const double _defaultVerticalPadding = 12.0;
   static const int _minPaddingFactor = 1;
   static const int _maxPaddingFactor = 5;
+  static const EdgeInsets _defaultContentPadding = EdgeInsets.symmetric(horizontal: 16.0);
+
+  /// Default text align
+  static const TextAlign _defaultTextAlign = TextAlign.start;
 
   /// Available text styles (from [Typography.englishLike2018])
   static final _textStyles = [
@@ -65,15 +72,25 @@ class ListItemStyle {
   /// The text color
   Color textColor;
 
-  double _horizontalPadding;
-  double _verticalPadding;
+  /// The content padding
+  EdgeInsetsGeometry contentPadding;
 
-  EdgeInsetsGeometry get contentPadding =>
-      EdgeInsets.symmetric(horizontal: _horizontalPadding, vertical: _verticalPadding);
-
+  /// The text align
   TextAlign textAlign;
 
+  /// The text style
   TextStyle textStyle;
+
+  void reset() {
+    backColor = textColor = contentPadding = textAlign = textStyle = null;
+//    backColor = _defaultBackColor;
+//    backColor = null;
+//    textColor = _defaultBackColor.contrastOf();
+//    textColor = null;
+//    contentPadding = null;
+//    textAlign = null;
+//    textStyle = null;
+  }
 
   void shuffle() {
     // Shuffle background and text colors
@@ -81,10 +98,11 @@ class ListItemStyle {
     textColor = _shuffleTextColor();
 
     // Shuffle content padding
-    _horizontalPadding =
+    double horizontalPadding =
         _defaultHorizontalPadding * _random.nextIntInRange(_minPaddingFactor, _maxPaddingFactor);
-    _verticalPadding =
+    double verticalPadding =
         _defaultVerticalPadding * _random.nextIntInRange(_minPaddingFactor, _maxPaddingFactor);
+    contentPadding = EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding);
 
     // Shuffle text align
     textAlign = TextAlign.values[_random.nextInt(TextAlign.values.length)];
