@@ -15,6 +15,7 @@ class NeverendingScrollApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.white.createMaterialColor(),
+//        primarySwatch: Colors.black.createMaterialColor(),
       ),
       home: HomeScreen(),
     );

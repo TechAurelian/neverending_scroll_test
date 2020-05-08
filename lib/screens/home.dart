@@ -5,6 +5,9 @@ import 'package:neverendingscroll/common/app_strings.dart';
 import 'package:neverendingscroll/settings/list_item_style.dart';
 import 'package:neverendingscroll/widgets/index_list_item.dart';
 
+/// Overflow menu items enumeration.
+enum OverflowMenuItem { settings, rate, help }
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -27,19 +30,39 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(AppStrings.appName),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.shuffle),
+            icon: Icon(Icons.style),
             onPressed: _shuffleStyles,
+          ),
+          PopupMenuButton<OverflowMenuItem>(
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                value: OverflowMenuItem.settings,
+                child: Text(AppStrings.settingsMenuItem),
+              ),
+              PopupMenuItem(
+                value: OverflowMenuItem.rate,
+                child: Text(AppStrings.rateAppMenuItem),
+              ),
+              PopupMenuItem(
+                value: OverflowMenuItem.help,
+                child: Text(AppStrings.helpMenuItem),
+              ),
+            ],
           )
         ],
       ),
       body: Material(
         color: listItemStyle.backColor,
         child: InkWell(
+          child: ListTileTheme(
+            textColor: listItemStyle.textColor,
+            contentPadding: listItemStyle.contentPadding,
 
-          child: ListView.builder(
-            itemBuilder: (context, index) => IndexListItem(
-              index,
-              listItemStyle: listItemStyle,
+            child: ListView.builder(
+              itemBuilder: (context, index) => IndexListItem(
+                index,
+                listItemStyle: listItemStyle,
+              ),
             ),
           ),
         ),
