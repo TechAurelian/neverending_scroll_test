@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:neverendingscroll/common/app_strings.dart';
 import 'package:neverendingscroll/settings/list_item_style.dart';
+import 'package:neverendingscroll/settings/settings_provider.dart';
 import 'package:neverendingscroll/widgets/neverending_list_view.dart';
 
 /// Overflow menu items enumeration.
@@ -13,11 +15,40 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  static const int int64MaxValue = 9223372036854775807;
-  String debugText = AppStrings.appName;
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final ListItemStyle _listItemStyle = ListItemStyle();
-  final ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController;
+
+//  final FixedExtentScrollController _scrollController = FixedExtentScrollController(initialItem: 15000);
+
+  @override
+  void initState() {
+    super.initState();
+    initScrollController();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+//    print('state = $state'); // resumed, paused, inactive, suspending
+    if (state == AppLifecycleState.paused) {
+      SettingsProvider.setScrollOffset(_scrollController.offset);
+      print('paused at offset ${_scrollController.offset}');
+    }
+  }
+
+  Future<void> initScrollController() async {
+    double scrollOffset = await SettingsProvider.getScrollOffset();
+    print('init - scroll offset from shared: $scrollOffset');
+    _scrollController = ScrollController(initialScrollOffset: scrollOffset);
+    print('init - initial scroll offset: ${_scrollController.initialScrollOffset}');
+  }
 
   void _shuffleStyles() {
     setState(() {
@@ -36,14 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
       case OverflowMenuItem.settings:
         // Navigate to the Settings screen, and load settings and refresh on return
 //        loadSettingsScreen();
-        _scrollController.jumpTo(1000);
+        _scrollController.jumpTo(100000000000);
         break;
       case OverflowMenuItem.rate:
         // Launch the Google Play Store page to allow the user to rate the app
 //        launchUrl(_scaffoldKey.currentState, Strings.rateAppURL);
-      setState(() {
-        debugText = '$int64MaxValue, O: ${_scrollController.offset}';
-      });
+//        setState(() {
+//          debugText = '$int64MaxValue, O: ${_scrollController.offset}';
+//        });
         break;
       case OverflowMenuItem.help:
         _scrollController.animateTo(1000, duration: Duration(seconds: 5), curve: Curves.bounceIn);
@@ -55,11 +86,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     return Scaffold(
       appBar: AppBar(
-//        title: Text(AppStrings.appName),
-        title: Text(debugText),
-//        title: Text('${_listItemStyle.textStyle.debugLabel}'),
+        title: Text(AppStrings.appName),
+//        title: Text(debugText),
+//        title: Text('${_listItemStyle?.textStyle?.fontSize}'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.style),

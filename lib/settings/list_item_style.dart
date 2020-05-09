@@ -12,6 +12,8 @@ class ListItemStyle {
   static const int _minPaddingFactor = 1;
   static const int _maxPaddingFactor = 5;
 
+  static const _alignmentValues = [Alignment.centerLeft, Alignment.center, Alignment.centerRight];
+
   /// Available text styles (from [Typography.englishLike2018])
   static final _textStyles = [
     Typography.englishLike2018.display4,
@@ -68,14 +70,15 @@ class ListItemStyle {
   /// The content padding
   EdgeInsetsGeometry contentPadding;
 
-  /// The text align
-  TextAlign textAlign;
+  /// The text alignment
+  Alignment alignment = Alignment.centerLeft;
 
   /// The text style
   TextStyle textStyle;
 
   void reset() {
-    backColor = textColor = contentPadding = textAlign = textStyle = null;
+    backColor = textColor = contentPadding = textStyle = null;
+    alignment = Alignment.centerLeft;
 //    backColor = _defaultBackColor;
 //    backColor = null;
 //    textColor = _defaultBackColor.contrastOf();
@@ -98,7 +101,7 @@ class ListItemStyle {
     contentPadding = EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding);
 
     // Shuffle text align
-    textAlign = TextAlign.values[_random.nextInt(TextAlign.values.length)];
+    alignment = _alignmentValues[_random.nextInt(_alignmentValues.length)];
 
     // Shuffle text style and font features
     final String fontFeature = _fontFeatures[_random.nextInt(_fontFeatures.length)];

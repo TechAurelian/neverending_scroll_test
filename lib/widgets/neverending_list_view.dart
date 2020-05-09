@@ -14,21 +14,20 @@ class NeverendingListView extends StatelessWidget {
 
     return Material(
       color: listItemStyle.backColor,
-      child: InkWell(
-        child: ListTileTheme(
-          textColor: listItemStyle.textColor,
-          contentPadding: listItemStyle.contentPadding,
-          child: ListView.builder(
-            controller: scrollController,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(
-                localizations.formatDecimal(index),
-                textAlign: listItemStyle.textAlign,
-                softWrap: false,
-                overflow: TextOverflow.fade,
-                style: listItemStyle.textStyle,
-              ),
-              onTap: () {},
+      child: ListView.builder(
+        itemExtent: 100,
+        controller: scrollController,
+        itemBuilder: (context, index) => InkWell(
+          onTap: () {},
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            alignment: listItemStyle.alignment,
+            child: Text(
+              localizations.formatDecimal(index),
+              softWrap: false,
+              overflow: TextOverflow.fade,
+//              style: listItemStyle.textStyle.copyWith(color: listItemStyle.textColor),
+              style: listItemStyle.textStyle,
             ),
           ),
         ),
