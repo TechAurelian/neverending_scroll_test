@@ -103,6 +103,7 @@ class ListItemStyle {
     padding = alignment == Alignment.centerLeft
         ? EdgeInsets.only(left: horizontalPadding)
         : alignment == Alignment.centerRight ? EdgeInsets.only(right: horizontalPadding) : null;
+    padding = EdgeInsets.all(horizontalPadding);
 
     // Shuffle text style and font features
     Color textColor = _shuffleTextColor();
@@ -113,8 +114,9 @@ class ListItemStyle {
     );
 
     // Shuffle item extent
-    final double minHeight = textStyle.calculateTextSize(_itemExtentDemoText).height;
-    itemExtent = _random.doubleInRange(minHeight, _maxItemExtent);
+//    final double minHeight = textStyle.calculateTextSize(_itemExtentDemoText).height;
+//    itemExtent = _random.doubleInRange(minHeight, _maxItemExtent);
+    itemExtent = _random.doubleInRange(100, 200);
   }
 
   Color _shuffleBackColor() {

@@ -5,6 +5,7 @@ import 'package:neverendingscroll/common/app_strings.dart';
 import 'package:neverendingscroll/settings/list_item_style.dart';
 import 'package:neverendingscroll/settings/settings_provider.dart';
 import 'package:neverendingscroll/widgets/neverending_list_view.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 /// Overflow menu items enumeration.
 enum OverflowMenuItem { reset, settings, rate, help }
@@ -16,7 +17,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final ListItemStyle _listItemStyle = ListItemStyle();
-  FixedExtentScrollController _scrollController = FixedExtentScrollController();
+
+  int currentIndex = 0;
+
+//  FixedExtentScrollController _scrollController = FixedExtentScrollController();
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   @override
   void initState() {
@@ -24,6 +30,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     initScrollController();
     _listItemStyle.reset();
     WidgetsBinding.instance.addObserver(this);
+
+    itemPositionsListener.itemPositions.addListener(() {
+//      print(itemPositionsListener.itemPositions.value.elementAt(0).index);
+      currentIndex = itemPositionsListener.itemPositions.value.elementAt(0).index;
+      print(currentIndex);
+    });
   }
 
   @override
@@ -35,29 +47,30 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed) {
-      SettingsProvider.setSelectedItem(_scrollController.selectedItem);
-      print('$state - selected item: ${_scrollController.selectedItem}');
+//      SettingsProvider.setSelectedItem(_scrollController.selectedItem);
+//      print('$state - selected item: ${_scrollController.selectedItem}');
     }
   }
 
   Future<void> initScrollController() async {
-    final int previousSelectedItem = await SettingsProvider.getSelectedItem();
-    _scrollController.jumpToItem(previousSelectedItem);
-    print(
-        'init - previous selected item: $previousSelectedItem - current selected item ${_scrollController.selectedItem}');
+//    final int previousSelectedItem = await SettingsProvider.getSelectedItem();
+//    _scrollController.jumpToItem(previousSelectedItem);
+//    print(
+//        'init - previous selected item: $previousSelectedItem - current selected item ${_scrollController.selectedItem}');
   }
 
   void _shuffleStyles() {
-    int curSelectedItem = _scrollController.selectedItem;
+//    int curSelectedItem = _scrollController.selectedItem;
 //    setState(() {
 //      _listItemStyle.shuffle();
 //    });
     setState(() {
 //      int curSelectedItem = _scrollController.selectedItem;
+
       _listItemStyle.shuffle();
 //      _scrollController.jumpToItem(curSelectedItem);
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) => afterFirstLayout(curSelectedItem));
+//    WidgetsBinding.instance.addPostFrameCallback((_) => afterFirstLayout(curSelectedItem));
   }
 
   void _updateStyles(Function fn) {
@@ -69,9 +82,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   afterFirstLayout(int index) {
-    setState(() {
-      _scrollController.jumpToItem(index);
-    });
+//    setState(() {
+//      _scrollController.jumpToItem(index);
+//    });
 
 //    _scrollController.jumpToItem(index);
 //    print('currentSelectedItem after jump: ${_scrollController.selectedItem}');
@@ -92,7 +105,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       case OverflowMenuItem.settings:
         // Navigate to the Settings screen, and load settings and refresh on return
 //        loadSettingsScreen();
-        _scrollController.jumpTo(0);
+//        _scrollController.jumpTo(0);
+        itemScrollController.jumpTo(index: 900000);
         break;
       case OverflowMenuItem.rate:
         // Launch the Google Play Store page to allow the user to rate the app
@@ -102,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 //        });
         break;
       case OverflowMenuItem.help:
-        _scrollController.animateTo(1000, duration: Duration(seconds: 5), curve: Curves.bounceIn);
+//        _scrollController.animateTo(1000, duration: Duration(seconds: 5), curve: Curves.bounceIn);
         // Launch the app online help url
 //        launchUrl(_scaffoldKey.currentState, Strings.helpURL);
         break;
@@ -146,7 +160,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       ),
       body: NeverendingListView(
         listItemStyle: _listItemStyle,
-        scrollController: _scrollController,
+        itemScrollController: itemScrollController,
+        initialScrollIndex: currentIndex,
+        itemPositionsListener: itemPositionsListener,
+//        scrollController: _scrollController,
       ),
     );
   }
