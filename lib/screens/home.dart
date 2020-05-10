@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final ListItemStyle _listItemStyle = ListItemStyle();
-  ScrollController _scrollController = ScrollController();
+  FixedExtentScrollController _scrollController = FixedExtentScrollController();
 
   @override
   void initState() {
@@ -34,24 +34,29 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print('state = $state'); // resumed, paused, inactive, suspending
     if (state != AppLifecycleState.resumed) {
-      SettingsProvider.setScrollOffset(_scrollController.offset);
-      print('paused at offset ${_scrollController.offset}');
+      SettingsProvider.setSelectedItem(_scrollController.selectedItem);
+      print('$state - selected item: ${_scrollController.selectedItem}');
     }
   }
 
   Future<void> initScrollController() async {
-    final double previousScrollOffset = await SettingsProvider.getScrollOffset();
-    print('init - scroll offset from shared: $previousScrollOffset');
-    _scrollController.jumpTo(previousScrollOffset);
-    print('init - initial scroll offset: ${_scrollController.initialScrollOffset}');
+    final int previousSelectedItem = await SettingsProvider.getSelectedItem();
+    _scrollController.jumpToItem(previousSelectedItem);
+    print(
+        'init - previous selected item: $previousSelectedItem - current selected item ${_scrollController.selectedItem}');
   }
 
   void _shuffleStyles() {
+    int currentSelectedItem = _scrollController.selectedItem;
+    print('currentSelectedItem: $currentSelectedItem');
     setState(() {
       _listItemStyle.shuffle();
     });
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => afterFirstLayout(currentSelectedItem));
+//    _scrollController.jumpToItem(currentSelectedItem);
+//    print('currentSelectedItem after jump: ${_scrollController.selectedItem}');
   }
 
   /// Performs the tasks of the overflow menu items.
@@ -122,5 +127,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         scrollController: _scrollController,
       ),
     );
+  }
+
+  afterFirstLayout(int index) {
+    _scrollController.jumpToItem(index);
+    print('currentSelectedItem after jump: ${_scrollController.selectedItem}');
   }
 }

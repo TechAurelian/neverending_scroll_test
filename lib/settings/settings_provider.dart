@@ -2,23 +2,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Helper class that saves and reads app settings to persistent storage.
 class SettingsProvider {
-
-  /// Default scroll offset
-  static const double _defaultScrollOffset = 0.0;
+  /// Initial selected index
+  static const int _initialSelectedItem = 0;
 
   /// Persistent storage keys.
-  static const String _scrollOffsetKey = 'scroll_offset';
+  static const String _selectedItemKey = 'selected_item';
 
-  /// Saves the scroll offset [value] to persistent storage.
-  static Future<void> setScrollOffset(double value) async {
+  /// Saves the currently selected item index that's closest to the center of the viewport
+  /// to persistent storage.
+  static Future<void> setSelectedItem(int value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble(_scrollOffsetKey, value);
+    await prefs.setInt(_selectedItemKey, value);
   }
 
-  /// Reads the scroll offset setting value from persistent storage.
-  static Future<double> getScrollOffset() async {
+  /// Reads the currently selected item index that's closest to the center of the viewport
+  /// from persistent storage.
+  static Future<int> getSelectedItem() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble(_scrollOffsetKey) ?? _defaultScrollOffset;
+    return prefs.getInt(_selectedItemKey) ?? _initialSelectedItem;
   }
-
 }
