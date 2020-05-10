@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -48,15 +47,19 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   void _shuffleStyles() {
+    print('${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio}');
+
     int currentSelectedItem = _scrollController.selectedItem;
     print('currentSelectedItem: $currentSelectedItem');
     setState(() {
       _listItemStyle.shuffle();
     });
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => afterFirstLayout(currentSelectedItem));
-//    _scrollController.jumpToItem(currentSelectedItem);
-//    print('currentSelectedItem after jump: ${_scrollController.selectedItem}');
+    WidgetsBinding.instance.addPostFrameCallback((_) => afterFirstLayout(currentSelectedItem));
+  }
+
+  afterFirstLayout(int index) {
+    _scrollController.jumpToItem(index);
+    print('currentSelectedItem after jump: ${_scrollController.selectedItem}');
   }
 
   /// Performs the tasks of the overflow menu items.
@@ -127,10 +130,5 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         scrollController: _scrollController,
       ),
     );
-  }
-
-  afterFirstLayout(int index) {
-    _scrollController.jumpToItem(index);
-    print('currentSelectedItem after jump: ${_scrollController.selectedItem}');
   }
 }

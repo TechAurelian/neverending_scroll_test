@@ -6,7 +6,6 @@ import 'package:neverendingscroll/utils/color_utils.dart';
 import 'package:neverendingscroll/utils/utils.dart';
 
 class ListItemStyle {
-
   static const String _itemExtentDemoText = '1,000,000';
 
   /// Maximum item extent
@@ -14,7 +13,6 @@ class ListItemStyle {
 
   // Content padding defaults
   static const double _defaultHorizontalPadding = 16.0;
-  static const double _defaultVerticalPadding = 12.0;
   static const int _minPaddingFactor = 1;
   static const int _maxPaddingFactor = 5;
 
@@ -77,7 +75,7 @@ class ListItemStyle {
   Color _textColor;
 
   /// The content padding
-  EdgeInsetsGeometry contentPadding;
+  EdgeInsetsGeometry padding;
 
   /// The text alignment
   Alignment alignment;
@@ -86,7 +84,7 @@ class ListItemStyle {
   TextStyle textStyle;
 
   void reset() {
-    backColor = _textColor = contentPadding = textStyle = alignment = null;
+    backColor = _textColor = padding = textStyle = alignment = null;
   }
 
   void shuffle() {
@@ -94,14 +92,21 @@ class ListItemStyle {
     backColor = _shuffleBackColor();
 
     // Shuffle content padding
-    double horizontalPadding =
-        _defaultHorizontalPadding * _random.nextIntInRange(_minPaddingFactor, _maxPaddingFactor);
-    double verticalPadding =
-        _defaultVerticalPadding * _random.nextIntInRange(_minPaddingFactor, _maxPaddingFactor);
-    contentPadding = EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding);
+//    double horizontalPadding =
+//        _defaultHorizontalPadding * _random.nextIntInRange(_minPaddingFactor, _maxPaddingFactor);
+
+//    double horizontalPadding = _random.doubleInRange(
+//        _defaultHorizontalPadding, _defaultHorizontalPadding * _maxPaddingFactor);
+//    padding = EdgeInsets.symmetric(horizontal: horizontalPadding);
+
+    double leftPadding = _random.doubleInRange(0.0, 80.0);
+    double rightPadding = _random.doubleInRange(0.0, 80.0);
+    padding = EdgeInsets.only(left: leftPadding, right: rightPadding);
+    print('$padding');
 
     // Shuffle text align
     alignment = _alignmentValues[_random.nextInt(_alignmentValues.length)];
+    print('$alignment');
 
     // Shuffle text style and font features
     _textColor = _shuffleTextColor();
@@ -114,6 +119,7 @@ class ListItemStyle {
     // Shuffle item extent
     final double minHeight = textStyle.calculateTextSize(_itemExtentDemoText).height;
     itemExtent = _random.doubleInRange(minHeight, _maxItemExtent);
+    print('calc size: ${textStyle.calculateTextSize(_itemExtentDemoText)}');
   }
 
   Color _shuffleBackColor() {
