@@ -17,9 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final ListItemStyle _listItemStyle = ListItemStyle();
-  ScrollController _scrollController;
-
-//  final FixedExtentScrollController _scrollController = FixedExtentScrollController(initialItem: 15000);
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -36,17 +34,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-//    print('state = $state'); // resumed, paused, inactive, suspending
-    if (state == AppLifecycleState.paused) {
+    print('state = $state'); // resumed, paused, inactive, suspending
+    if (state != AppLifecycleState.resumed) {
       SettingsProvider.setScrollOffset(_scrollController.offset);
       print('paused at offset ${_scrollController.offset}');
     }
   }
 
   Future<void> initScrollController() async {
-    double scrollOffset = await SettingsProvider.getScrollOffset();
-    print('init - scroll offset from shared: $scrollOffset');
-    _scrollController = ScrollController(initialScrollOffset: scrollOffset);
+    final double previousScrollOffset = await SettingsProvider.getScrollOffset();
+    print('init - scroll offset from shared: $previousScrollOffset');
+    _scrollController.jumpTo(previousScrollOffset);
     print('init - initial scroll offset: ${_scrollController.initialScrollOffset}');
   }
 
