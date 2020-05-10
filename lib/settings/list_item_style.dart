@@ -12,9 +12,9 @@ class ListItemStyle {
   static const double _maxItemExtent = 200.0;
 
   // Content padding defaults
-  static const double _defaultHorizontalPadding = 16.0;
-  static const int _minPaddingFactor = 1;
-  static const int _maxPaddingFactor = 5;
+  static const double _defaultPadding = 16.0;
+  static const double _minHorizontalPadding = 0.0;
+  static const double _maxHorizontalPadding = 16.0 * 5;
 
   static const _alignmentValues = [Alignment.centerLeft, Alignment.center, Alignment.centerRight];
 
@@ -68,11 +68,8 @@ class ListItemStyle {
   /// The background color
   Color backColor;
 
-//  double itemExtent;
-  double itemExtent = 200.0;
-
-  /// The text color
-  Color _textColor;
+  /// The item extent
+  double itemExtent;
 
   /// The content padding
   EdgeInsetsGeometry padding;
@@ -84,42 +81,40 @@ class ListItemStyle {
   TextStyle textStyle;
 
   void reset() {
-    backColor = _textColor = padding = textStyle = alignment = null;
+//    backColor = padding = textStyle = alignment = null;
+    backColor = textStyle = null;
+
+    alignment = _alignmentValues[0];
+    padding = EdgeInsets.symmetric(horizontal: _defaultPadding);
+
+    final double textHeight = textStyle.calculateTextSize(_itemExtentDemoText).height;
+    itemExtent = textHeight + _defaultPadding * 2;
   }
 
   void shuffle() {
     // Shuffle background color
     backColor = _shuffleBackColor();
 
-    // Shuffle content padding
-//    double horizontalPadding =
-//        _defaultHorizontalPadding * _random.nextIntInRange(_minPaddingFactor, _maxPaddingFactor);
-
-//    double horizontalPadding = _random.doubleInRange(
-//        _defaultHorizontalPadding, _defaultHorizontalPadding * _maxPaddingFactor);
-//    padding = EdgeInsets.symmetric(horizontal: horizontalPadding);
-
-    double leftPadding = _random.doubleInRange(0.0, 80.0);
-    double rightPadding = _random.doubleInRange(0.0, 80.0);
-    padding = EdgeInsets.only(left: leftPadding, right: rightPadding);
-    print('$padding');
-
     // Shuffle text align
     alignment = _alignmentValues[_random.nextInt(_alignmentValues.length)];
-    print('$alignment');
+
+    // Shuffle padding
+    double horizontalPadding = _random.doubleInRange(_minHorizontalPadding, _maxHorizontalPadding);
+    padding = alignment == Alignment.centerLeft
+        ? EdgeInsets.only(left: horizontalPadding)
+        : alignment == Alignment.centerRight ? EdgeInsets.only(right: horizontalPadding) : null;
 
     // Shuffle text style and font features
-    _textColor = _shuffleTextColor();
+    Color textColor = _shuffleTextColor();
     final String fontFeature = _fontFeatures[_random.nextInt(_fontFeatures.length)];
     textStyle = _textStyles[_random.nextInt(_textStyles.length)].copyWith(
-      color: _textColor,
+      color: textColor,
       fontFeatures: [FontFeature(fontFeature)],
     );
 
     // Shuffle item extent
     final double minHeight = textStyle.calculateTextSize(_itemExtentDemoText).height;
     itemExtent = _random.doubleInRange(minHeight, _maxItemExtent);
-    print('calc size: ${textStyle.calculateTextSize(_itemExtentDemoText)}');
   }
 
   Color _shuffleBackColor() {

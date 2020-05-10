@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     initScrollController();
+    _listItemStyle.reset();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -47,33 +48,51 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   void _shuffleStyles() {
-    print('${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio}');
-
-    int currentSelectedItem = _scrollController.selectedItem;
-    print('currentSelectedItem: $currentSelectedItem');
+    int curSelectedItem = _scrollController.selectedItem;
+//    setState(() {
+//      _listItemStyle.shuffle();
+//    });
     setState(() {
+//      int curSelectedItem = _scrollController.selectedItem;
       _listItemStyle.shuffle();
+//      _scrollController.jumpToItem(curSelectedItem);
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) => afterFirstLayout(currentSelectedItem));
+    WidgetsBinding.instance.addPostFrameCallback((_) => afterFirstLayout(curSelectedItem));
+  }
+
+  void _updateStyles(Function fn) {
+//    int curSelectedItem = _scrollController.selectedItem;
+    setState(() {
+      fn();
+    });
+//    WidgetsBinding.instance.addPostFrameCallback((_) => afterFirstLayout(curSelectedItem));
   }
 
   afterFirstLayout(int index) {
-    _scrollController.jumpToItem(index);
-    print('currentSelectedItem after jump: ${_scrollController.selectedItem}');
+    setState(() {
+      _scrollController.jumpToItem(index);
+    });
+
+//    _scrollController.jumpToItem(index);
+//    print('currentSelectedItem after jump: ${_scrollController.selectedItem}');
   }
 
   /// Performs the tasks of the overflow menu items.
   void popupMenuSelection(OverflowMenuItem item) {
     switch (item) {
       case OverflowMenuItem.reset:
-        setState(() {
+        _updateStyles(() {
           _listItemStyle.reset();
         });
+
+//        setState(() {
+//          _listItemStyle.reset();
+//        });
         break;
       case OverflowMenuItem.settings:
         // Navigate to the Settings screen, and load settings and refresh on return
 //        loadSettingsScreen();
-        _scrollController.jumpTo(100000000000);
+        _scrollController.jumpTo(0);
         break;
       case OverflowMenuItem.rate:
         // Launch the Google Play Store page to allow the user to rate the app

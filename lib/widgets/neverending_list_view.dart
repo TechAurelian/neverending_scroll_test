@@ -18,6 +18,7 @@ class NeverendingListView extends StatelessWidget {
 //      diameterRatio: 10,
         diameterRatio: 100000,
         itemExtent: listItemStyle.itemExtent,
+//        itemExtent: 100,
         controller: scrollController,
         onSelectedItemChanged: (_) {},
         childDelegate: ListWheelChildBuilderDelegate(
