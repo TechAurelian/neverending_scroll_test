@@ -15,7 +15,8 @@ class NeverendingListView extends StatelessWidget {
     return Material(
       color: listItemStyle.backColor,
       child: ListView.builder(
-        itemExtent: 100,
+        itemExtent: listItemStyle.itemExtent,
+//        itemExtent: 100.0,
         controller: scrollController,
         itemBuilder: (context, index) => InkWell(
           onTap: () {},
@@ -26,7 +27,6 @@ class NeverendingListView extends StatelessWidget {
               localizations.formatDecimal(index),
               softWrap: false,
               overflow: TextOverflow.fade,
-//              style: listItemStyle.textStyle.copyWith(color: listItemStyle.textColor),
               style: listItemStyle.textStyle,
             ),
           ),

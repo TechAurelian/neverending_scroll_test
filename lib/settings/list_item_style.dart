@@ -6,6 +6,12 @@ import 'package:neverendingscroll/utils/color_utils.dart';
 import 'package:neverendingscroll/utils/utils.dart';
 
 class ListItemStyle {
+
+  static const String _itemExtentDemoText = '1,000,000';
+
+  /// Maximum item extent
+  static const double _maxItemExtent = 200.0;
+
   // Content padding defaults
   static const double _defaultHorizontalPadding = 16.0;
   static const double _defaultVerticalPadding = 12.0;
@@ -64,34 +70,28 @@ class ListItemStyle {
   /// The background color
   Color backColor;
 
+//  double itemExtent;
+  double itemExtent = 200.0;
+
   /// The text color
-  Color textColor;
+  Color _textColor;
 
   /// The content padding
   EdgeInsetsGeometry contentPadding;
 
   /// The text alignment
-  Alignment alignment = Alignment.centerLeft;
+  Alignment alignment;
 
   /// The text style
   TextStyle textStyle;
 
   void reset() {
-    backColor = textColor = contentPadding = textStyle = null;
-    alignment = Alignment.centerLeft;
-//    backColor = _defaultBackColor;
-//    backColor = null;
-//    textColor = _defaultBackColor.contrastOf();
-//    textColor = null;
-//    contentPadding = null;
-//    textAlign = null;
-//    textStyle = null;
+    backColor = _textColor = contentPadding = textStyle = alignment = null;
   }
 
   void shuffle() {
-    // Shuffle background and text colors
+    // Shuffle background color
     backColor = _shuffleBackColor();
-    textColor = _shuffleTextColor();
 
     // Shuffle content padding
     double horizontalPadding =
@@ -104,9 +104,16 @@ class ListItemStyle {
     alignment = _alignmentValues[_random.nextInt(_alignmentValues.length)];
 
     // Shuffle text style and font features
+    _textColor = _shuffleTextColor();
     final String fontFeature = _fontFeatures[_random.nextInt(_fontFeatures.length)];
-    textStyle = _textStyles[_random.nextInt(_textStyles.length)]
-        .copyWith(fontFeatures: [FontFeature(fontFeature)]);
+    textStyle = _textStyles[_random.nextInt(_textStyles.length)].copyWith(
+      color: _textColor,
+      fontFeatures: [FontFeature(fontFeature)],
+    );
+
+    // Shuffle item extent
+    final double minHeight = textStyle.calculateTextSize(_itemExtentDemoText).height;
+    itemExtent = _random.doubleInRange(minHeight, _maxItemExtent);
   }
 
   Color _shuffleBackColor() {

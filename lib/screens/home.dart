@@ -84,12 +84,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.appName),
 //        title: Text(debugText),
-//        title: Text('${_listItemStyle?.textStyle?.fontSize}'),
+//        title: Text('${_listItemStyle?.itemExtent}'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.style),
