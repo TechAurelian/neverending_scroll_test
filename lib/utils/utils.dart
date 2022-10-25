@@ -1,8 +1,5 @@
 import 'dart:math';
-
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 extension RandomX on Random {
   int nextIntInRange(int min, int max) => min + nextInt(max - min);

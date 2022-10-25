@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:neverendingscroll/settings/list_item_style.dart';
+
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import '../settings/list_item_style.dart';
 
 class NeverendingListView extends StatelessWidget {
   final ListItemStyle listItemStyle;
@@ -8,16 +10,15 @@ class NeverendingListView extends StatelessWidget {
 //  final ScrollController scrollController;
   final ItemScrollController itemScrollController;
   final int initialScrollIndex;
-  final ItemPositionsListener itemPositionsListener;
+  final ItemPositionsListener? itemPositionsListener;
 
 //  NeverendingListView({Key key, @required this.listItemStyle, @required this.scrollController})
-  NeverendingListView(
-      {Key key,
-      @required this.listItemStyle,
-      @required this.itemScrollController,
-      this.initialScrollIndex,
-      this.itemPositionsListener})
-      : super(key: key);
+  const NeverendingListView(
+      {super.key,
+      required this.listItemStyle,
+      required this.itemScrollController,
+      this.initialScrollIndex = 0,
+      this.itemPositionsListener});
 
   @override
   Widget build(BuildContext context) {

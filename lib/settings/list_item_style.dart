@@ -1,15 +1,15 @@
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:neverendingscroll/utils/color_utils.dart';
-import 'package:neverendingscroll/utils/utils.dart';
+
+import '../utils/color_utils.dart';
+import '../utils/utils.dart';
 
 class ListItemStyle {
   static const String _itemExtentDemoText = '1,000,000';
 
   /// Maximum item extent
-  static const double _maxItemExtent = 200.0;
+  // static const double _maxItemExtent = 200.0;
 
   // Content padding defaults
   static const double _defaultPadding = 16.0;
@@ -20,19 +20,21 @@ class ListItemStyle {
 
   /// Available text styles (from [Typography.englishLike2018])
   static final _textStyles = [
-    Typography.englishLike2018.display4,
-    Typography.englishLike2018.display3,
-    Typography.englishLike2018.display2,
-    Typography.englishLike2018.display1,
-    Typography.englishLike2018.headline,
-    Typography.englishLike2018.title,
-    Typography.englishLike2018.subhead,
-    Typography.englishLike2018.body2,
-    Typography.englishLike2018.body1,
-    Typography.englishLike2018.button,
-    Typography.englishLike2018.caption,
-    Typography.englishLike2018.subtitle,
-    Typography.englishLike2018.overline,
+    Typography.englishLike2021.displayLarge,
+    Typography.englishLike2021.displayMedium,
+    Typography.englishLike2021.displaySmall,
+    Typography.englishLike2021.headlineLarge,
+    Typography.englishLike2021.headlineMedium,
+    Typography.englishLike2021.headlineSmall,
+    Typography.englishLike2021.titleLarge,
+    Typography.englishLike2021.titleMedium,
+    Typography.englishLike2021.titleSmall,
+    Typography.englishLike2021.labelLarge,
+    Typography.englishLike2021.labelMedium,
+    Typography.englishLike2021.labelSmall,
+    Typography.englishLike2021.bodyLarge,
+    Typography.englishLike2021.bodyMedium,
+    Typography.englishLike2021.bodySmall,
   ];
 
   /// Available font features
@@ -66,28 +68,29 @@ class ListItemStyle {
   final Random _random = Random();
 
   /// The background color
-  Color backColor;
+  Color? backColor;
 
   /// The item extent
-  double itemExtent;
+  double? itemExtent;
 
   /// The content padding
-  EdgeInsetsGeometry padding;
+  EdgeInsetsGeometry? padding;
 
   /// The text alignment
-  Alignment alignment;
+  Alignment? alignment;
 
   /// The text style
-  TextStyle textStyle;
+  TextStyle? textStyle;
 
   void reset() {
 //    backColor = padding = textStyle = alignment = null;
     backColor = textStyle = null;
 
     alignment = _alignmentValues[0];
-    padding = EdgeInsets.symmetric(horizontal: _defaultPadding);
+    padding = const EdgeInsets.symmetric(horizontal: _defaultPadding);
 
-    final double textHeight = textStyle.calculateTextSize(_itemExtentDemoText).height;
+    final double textHeight =
+        textStyle != null ? textStyle!.calculateTextSize(_itemExtentDemoText).height : 100.0;
     itemExtent = textHeight + _defaultPadding * 2;
   }
 
@@ -102,13 +105,15 @@ class ListItemStyle {
     double horizontalPadding = _random.doubleInRange(_minHorizontalPadding, _maxHorizontalPadding);
     padding = alignment == Alignment.centerLeft
         ? EdgeInsets.only(left: horizontalPadding)
-        : alignment == Alignment.centerRight ? EdgeInsets.only(right: horizontalPadding) : null;
+        : alignment == Alignment.centerRight
+            ? EdgeInsets.only(right: horizontalPadding)
+            : null;
     padding = EdgeInsets.all(horizontalPadding);
 
     // Shuffle text style and font features
     Color textColor = _shuffleTextColor();
     final String fontFeature = _fontFeatures[_random.nextInt(_fontFeatures.length)];
-    textStyle = _textStyles[_random.nextInt(_textStyles.length)].copyWith(
+    textStyle = _textStyles[_random.nextInt(_textStyles.length)]!.copyWith(
       color: textColor,
       fontFeatures: [FontFeature(fontFeature)],
     );
@@ -131,7 +136,8 @@ class ListItemStyle {
   }
 
   Color _shuffleTextColor() =>
-      [Colors.white, Colors.black].contains(backColor) && _random.nextBool()
+      ([Colors.white, Colors.black].contains(backColor) && _random.nextBool()) ||
+              (backColor == null)
           ? ColorX.randomPrimary(_random)
-          : backColor.contrastOf();
+          : backColor!.contrastOf();
 }

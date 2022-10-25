@@ -1,18 +1,19 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:neverendingscroll/common/app_strings.dart';
-import 'package:neverendingscroll/settings/list_item_style.dart';
-import 'package:neverendingscroll/settings/settings_provider.dart';
-import 'package:neverendingscroll/widgets/neverending_list_view.dart';
+
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import '../common/app_strings.dart';
+import '../settings/list_item_style.dart';
+import '../widgets/neverending_list_view.dart';
 
 /// Overflow menu items enumeration.
 enum OverflowMenuItem { reset, settings, rate, help }
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     itemPositionsListener.itemPositions.addListener(() {
 //      print(itemPositionsListener.itemPositions.value.elementAt(0).index);
       currentIndex = itemPositionsListener.itemPositions.value.elementAt(0).index;
-      print(currentIndex);
+      // print(currentIndex);
     });
   }
 
@@ -127,30 +128,30 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.appName),
+        title: const Text(AppStrings.appName),
 //        title: Text(debugText),
 //        title: Text('${_listItemStyle?.itemExtent}'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.style),
+            icon: const Icon(Icons.style),
             onPressed: _shuffleStyles,
           ),
           PopupMenuButton<OverflowMenuItem>(
             onSelected: popupMenuSelection,
             itemBuilder: (_) => [
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: OverflowMenuItem.reset,
                 child: Text(AppStrings.resetMenuItem),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: OverflowMenuItem.settings,
                 child: Text(AppStrings.settingsMenuItem),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: OverflowMenuItem.rate,
                 child: Text(AppStrings.rateAppMenuItem),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: OverflowMenuItem.help,
                 child: Text(AppStrings.helpMenuItem),
               ),
